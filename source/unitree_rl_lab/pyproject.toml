@@ -7,10 +7,13 @@ name = "unitree_rl_lab"
 version = "0.2.1"
 description = "Reinforcement Learning Lab for Unitree Robots."
 dependencies = [
+    "isaaclab==2.3.2.post1",
+    "isaacsim==5.1.0.0",
+    "psutil==5.9.8",
     "argcomplete",
 ]
 requires-python = ">=3.10"
-license = { text = "Apache 2.0" }
+license = "Apache-2.0"
 authors = [
     { name = "Unitree Robotics" }
 ]
@@ -19,7 +22,9 @@ maintainers = [
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: Apache Software License",
     "Operating System :: POSIX :: Linux"
 ]
 dynamic = []
+
+[tool.setuptools]
+packages = ["unitree_rl_lab"]

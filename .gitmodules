@@ -1,0 +1,3 @@
+[submodule "unitree_model"]
+	path = unitree_model
+	url = https://huggingface.co/datasets/unitreerobotics/unitree_model
