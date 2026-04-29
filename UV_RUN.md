@@ -86,5 +86,11 @@ python scripts/mimic/replay_npz.py \
 Start training with the Mimic task:
 
 ```bash
+# Specify the motion file in env_cfg
 python scripts/rsl_rl/train.py --headless --task Unitree-G1-29dof-Mimic-Dance-102
+
+# Use custom motion task
+python scripts/rsl_rl/train.py --headless --task Unitree-G1-29dof-Mimic-Custom \
+  --motion_file /path/to/motion.npz \
+  --experiment_name unitree_g1_29dof_mimic_{your_motion_name}
 ```
