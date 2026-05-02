@@ -71,7 +71,7 @@ For example, to convert `G1_Take_102.bvh_60hz.csv` to the required `npz` format:
 
 ```bash
 python scripts/mimic/csv_to_npz.py \
-  -f source/unitree_rl_lab/unitree_rl_lab/tasks/mimic/robots/g1_29dof/dance_102/G1_Take_102.bvh_60hz.csv \
+  -i source/unitree_rl_lab/unitree_rl_lab/tasks/mimic/robots/g1_29dof/dance_102/G1_Take_102.bvh_60hz.csv \
   --input_fps 60 \
   --headless
 ```
@@ -91,6 +91,27 @@ python scripts/rsl_rl/train.py --headless --task Unitree-G1-29dof-Mimic-Dance-10
 
 # Use custom motion task
 python scripts/rsl_rl/train.py --headless --task Unitree-G1-29dof-Mimic-Custom \
-  --motion_file /path/to/motion.npz \
+  --motion_files /path/to/motion.npz \
   --experiment_name unitree_g1_29dof_mimic_{your_motion_name}
 ```
+
+### Multi motions training
+
+Support training with multiple motions by providing a directory of `npz` files. For example 2 motions under `data/dailylife_data_v1.1`.
+
+```bash
+python scripts/mimic/csv_to_npz.py \
+  -i data/dailylife_data_v1.1 \
+  --input_fps 30 \
+  --headless
+```
+
+Start training with multiple motions:
+
+```bash
+python scripts/rsl_rl/train.py --headless --task Unitree-G1-29dof-Mimic-Custom \
+  --motion_files data/dailylife_data_v1.1/load_lift_1_2.npz data/dailylife_data_v1.1/locomotion_jump_1_3.npz \
+  --experiment_name unitree_g1_29dof_mimic_dailylife_multi
+```
+
+The motion files information will be automatically stored in `logs/rsl_rl/<experiment_name>/<timestamp>/params/motion_files.yaml`

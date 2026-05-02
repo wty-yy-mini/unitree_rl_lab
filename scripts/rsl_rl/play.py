@@ -30,6 +30,13 @@ parser.add_argument(
     help="Use the pre-trained checkpoint from Nucleus.",
 )
 parser.add_argument("--real-time", action="store_true", default=False, help="Run in real-time, if possible.")
+parser.add_argument(
+    "--motion_files",
+    type=str,
+    nargs="+",
+    default=None,
+    help="Motion .npz file paths or directories for the Mimic task.",
+)
 # append RSL-RL cli arguments
 cli_args.add_rsl_rl_args(parser)
 # append AppLauncher cli args
@@ -89,6 +96,10 @@ def main():
         resume_path = retrieve_file_path(args_cli.checkpoint)
     else:
         resume_path = get_checkpoint_path(log_root_path, agent_cfg.load_run, agent_cfg.load_checkpoint)
+
+    # specify motion file if use mimic custom task
+    if args_cli.motion_files is not None:
+        env_cfg.commands.motion.motion_files = args_cli.motion_files
 
     log_dir = os.path.dirname(resume_path)
 

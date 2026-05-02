@@ -40,7 +40,13 @@ parser.add_argument("--num_envs", type=int, default=None, help="Number of enviro
 parser.add_argument("--task", type=str, default=None, choices=tasks, help="Name of the task.")
 parser.add_argument("--seed", type=int, default=None, help="Seed used for the environment")
 parser.add_argument("--max_iterations", type=int, default=None, help="RL Policy training iterations.")
-parser.add_argument("--motion_file", type=str, default=None, help="Path to the motion file (in .npz format) for the Mimic task.")
+parser.add_argument(
+    "--motion_files",
+    type=str,
+    nargs="+",
+    default=None,
+    help="Motion .npz file paths or directories for the Mimic task.",
+)
 parser.add_argument(
     "--distributed", action="store_true", default=False, help="Run training with multiple GPUs or nodes."
 )
@@ -133,8 +139,8 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     env_cfg.seed = agent_cfg.seed
     env_cfg.sim.device = args_cli.device if args_cli.device is not None else env_cfg.sim.device
 
-    if args_cli.motion_file is not None:
-        env_cfg.commands.motion.motion_file = args_cli.motion_file
+    if args_cli.motion_files is not None:
+        env_cfg.commands.motion.motion_files = args_cli.motion_files
 
     # multi-gpu training configuration
     if args_cli.distributed:
@@ -157,6 +163,7 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     if agent_cfg.run_name:
         log_dir += f"_{agent_cfg.run_name}"
     log_dir = os.path.join(log_root_path, log_dir)
+    env_cfg.commands.motion.motion_log_path = os.path.join(log_dir, "params", "motion_files.yaml")
 
     # create isaac environment
     env = gym.make(args_cli.task, cfg=env_cfg, render_mode="rgb_array" if args_cli.video else None)

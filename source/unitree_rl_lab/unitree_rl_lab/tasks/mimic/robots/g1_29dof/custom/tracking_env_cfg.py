@@ -86,7 +86,7 @@ class CommandsCfg:
 
     motion = mdp.MotionCommandCfg(
         asset_name="robot",
-        motion_file=None,
+        # motion_files=['path/to/motion_file.npz'],  # use args in CLI: --motion-files path/to/motion_file.npz
         anchor_body_name="torso_link",
         resampling_time_range=(1.0e9, 1.0e9),
         debug_vis=True,
