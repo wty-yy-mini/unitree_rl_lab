@@ -95,7 +95,9 @@ python scripts/rsl_rl/train.py --headless --task Unitree-G1-29dof-Mimic-Custom \
   --experiment_name unitree_g1_29dof_mimic_{your_motion_name}
 ```
 
-### Multi motions training
+### Multi motions
+
+#### Training
 
 Support training with multiple motions by providing a directory of `npz` files. For example 2 motions under `data/dailylife_data_v1.1`.
 
@@ -115,3 +117,12 @@ python scripts/rsl_rl/train.py --headless --task Unitree-G1-29dof-Mimic-Custom \
 ```
 
 The motion files information will be automatically stored in `logs/rsl_rl/<experiment_name>/<timestamp>/params/motion_files.yaml`
+
+#### Evalutaion
+
+```bash
+python scripts/rsl_rl/play.py --task Unitree-G1-29dof-Mimic-Custom \
+  --experiment_name unitree_g1_29dof_mimic_dailylife_multi \
+  --motion_files data/dailylife_data_v1.1 \
+  --load_run 2026-05-02_12-59-56
+```

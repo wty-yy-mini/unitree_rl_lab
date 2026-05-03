@@ -50,7 +50,7 @@ class MotionLoader:
             motion_log_path: Optional YAML path used to save resolved motion metadata.
         """
         self.device = torch.device(device)
-        self.motion_files = resolve_files(motion_files, suffix=".npz")
+        self.motion_files = resolve_files(motion_files, suffixes=".npz")
         self.motion_names = [Path(path).stem for path in self.motion_files]
         self.motion_log_path = motion_log_path
 
