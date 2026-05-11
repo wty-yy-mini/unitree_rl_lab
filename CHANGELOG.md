@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 20260511 v0.2
+1. Upload dailylife dataset to huggingface https://huggingface.co/datasets/wty-yy/beyondmimic_dailylife_dataset
+2. Add python start training script for multi-motion model training, each motion class folder will be trained by a single model.
+3. Change default mimic `max_iterations=50000`
+
 ## 20260501 v0.1
 1. Add multi motion tracking support for `csv_to_npz.py`, `train.py`, `play.py`
 
