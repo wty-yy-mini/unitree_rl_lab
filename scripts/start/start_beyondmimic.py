@@ -8,7 +8,7 @@ motions under that folder. It also records the launched PID list and a JSON
 manifest under the configured log directory.
 
 Quick Start:
-    python scripts/start/start_beyondmimic_dailylife.py
+    python scripts/start/start_beyondmimic.py
 
 Notes:
     Configure all runtime options in the ``User Config`` block at the top of
@@ -21,6 +21,7 @@ Notes:
 
 from __future__ import annotations
 
+import csv
 import json
 import os
 import shlex
@@ -51,14 +52,14 @@ LOG_TAIL_LINES = 100
 MONITOR_INTERVAL_SEC = 2.0
 
 JOBS: list[dict[str, str | int]] = [
-    {"dir": "load/lift",         "cuda": "0"},
-    {"dir": "load/push",         "cuda": "0"},
-    {"dir": "load/throw",        "cuda": "0"},
+    # {"dir": "load/lift",         "cuda": "0"},
+    # {"dir": "load/push",         "cuda": "0"},
+    # {"dir": "load/throw",        "cuda": "0"},
     # {"dir": "locomotion/jump",   "cuda": "1"},
     # {"dir": "locomotion/run",    "cuda": "1"},
     # {"dir": "locomotion/walk",   "cuda": "1"},
-    # {"dir": "transition/getup",  "cuda": "2"},
-    # {"dir": "transition/sit",    "cuda": "2"},
+    {"dir": "transition/getup",  "cuda": "3"},
+    {"dir": "transition/sit",    "cuda": "4"},
     # {"dir": "transition/squat",  "cuda": "2"},
     # {"dir": "transition/stand",  "cuda": "3"},
     # {"dir": "transition/turn",   "cuda": "3"},
@@ -536,13 +537,31 @@ def main() -> int:
     with manifest_path.open("w", encoding="utf-8") as file:
         json.dump(manifest, file, indent=2, ensure_ascii=False)
 
-    pid_summary_path = launch_root / "pids.txt"
-    with pid_summary_path.open("w", encoding="utf-8") as file:
+    pid_summary_path = launch_root / "pids.csv"
+    with pid_summary_path.open("w", encoding="utf-8", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(
+            [
+                "job_name",
+                "cuda_visible_devices",
+                "pid",
+                "stdout_helper_pid",
+                "stderr_helper_pid",
+                "experiment_name",
+                "stdout_log",
+            ]
+        )
         for record in records:
-            file.write(
-                f"{record['job_name']}\t{record['cuda_visible_devices']}\t{record['pid']}\t"
-                f"{record['stdout_helper_pid']}\t{record['stderr_helper_pid']}\t"
-                f"{record['experiment_name']}\t{record['stdout_log']}\n"
+            writer.writerow(
+                [
+                    record["job_name"],
+                    record["cuda_visible_devices"],
+                    record["pid"],
+                    record["stdout_helper_pid"],
+                    record["stderr_helper_pid"],
+                    record["experiment_name"],
+                    record["stdout_log"],
+                ]
             )
 
     print(f"[INFO] Manifest written to: {manifest_path}")
